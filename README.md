@@ -171,16 +171,16 @@ end function
 
 ---
 
-# Implementation Status (Week 1)
+# Implementation (Week 1)
 
-Address class implemented and tested.  
-Date class implemented and tested.  
-Student class implemented and tested with sample data.  
-Makefile created with required targets.  
+Address class 
+Date class
+Student class with sample data.  
+Makefile created with the required targets (So Far).  
 
 ---
 
-# Makefile Targets
+# Makefile Targets (So Far)
 
 make → builds program  
 make run → runs program  
@@ -190,7 +190,7 @@ make valgrind → runs program using valgrind
 
 ---
 
-# Files Included
+# Files Included (So Far)
 
 - main.cpp  
 - address.h  
