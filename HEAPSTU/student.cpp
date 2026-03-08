@@ -1,55 +1,69 @@
-#include <iostream>
-#include <sstream>
-#include <vector>
 #include "student.h"
+#include <sstream>
+#include <iostream>
 
-Student::Student() {
-    firstName = "";
-    lastName = "";
-    creditHours = 0;
-}
+Student::Student(std::string line){
 
-void Student::init(std::string csvLine) {
-    std::stringstream ss(csvLine);
+    std::stringstream ss(line);
+
+    std::string street;
+    std::string city;
+    std::string state;
+    std::string zip;
+    std::string birth;
+    std::string gradDate;
     std::string temp;
-    std::vector<std::string> fields;
 
-    // Split CSV by commas
-    while (getline(ss, temp, ',')) {
-        fields.push_back(temp);
-    }
+    getline(ss, lastName, ',');
+    getline(ss, firstName, ',');
 
-    // Assign fields
-    firstName = fields[0];
-    lastName  = fields[1];
+    getline(ss, street, ',');
+    getline(ss, city, ',');
+    getline(ss, state, ',');
+    getline(ss, zip, ',');
 
-    std::string street = fields[2];
-    std::string city   = fields[3];
-    std::string state  = fields[4];
-    std::string zip    = fields[5];
+    getline(ss, birth, ',');
+    getline(ss, gradDate, ',');
 
-    std::string birth  = fields[6];
-    std::string grad   = fields[7];
+    getline(ss, temp, ',');
+    creditHours = stoi(temp);
 
-    creditHours = std::stoi(fields[8]);
+    address = new Address();
+    address->init(street, city, state, zip);
 
-    // Initialize composed objects
-    address.init(street, city, state, zip);
-    birthDate.init(birth);
-    gradDate.init(grad);
+    dob = new Date();
+    dob->init(birth);
+
+    grad = new Date();
+    grad->init(gradDate);
 }
 
-void Student::printStudent() const {
+Student::~Student(){
+
+    delete address;
+    delete dob;
+    delete grad;
+}
+
+std::string Student::getFirstName(){
+    return firstName;
+}
+
+std::string Student::getLastName(){
+    return lastName;
+}
+
+void Student::printStudent(){
+
     std::cout << firstName << " " << lastName << std::endl;
-    address.printAddress();
-    std::cout << "DOB: ";
-    birthDate.printDate();
-    std::cout << "Grad: ";
-    gradDate.printDate();
-    std::cout << "Credits: " << creditHours << std::endl;
-    std::cout << "____________________________________" << std::endl;
-}
 
-std::string Student::getLastFirst() const {
-    return lastName + ", " + firstName;
+    address->printAddress();
+
+    std::cout << "DOB: ";
+    dob->printDate();
+
+    std::cout << "Grad: ";
+    grad->printDate();
+
+    std::cout << "Credits: " << creditHours << std::endl;
 }

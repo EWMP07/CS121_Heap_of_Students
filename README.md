@@ -9,7 +9,7 @@ class Date {
     - int day
     - int year
     + Date()
-    + init(string)
+    + Date(string)
     + printDate() const
 }
 
@@ -19,21 +19,23 @@ class Address {
     - string state
     - string zip
     + Address()
-    + init(string, string, string, string)
+    + Address(string, string, string, string)
     + printAddress() const
 }
 
 class Student {
     - string firstName
     - string lastName
-    - Address address
-    - Date birthDate
-    - Date gradDate
+    - Address* address
+    - Date* birthDate
+    - Date* gradDate
     - int creditHours
     + Student()
-    + init(string)
+    + Student(string csvLine)
+    + ~Student()
     + printStudent() const
-    + getLastFirst() const
+    + getFirstName() const
+    + getLastName() const
 }
 
 Student --> Address
@@ -110,27 +112,31 @@ end function
 ```
 function init(csvLine)
 
-    create stringstream from csvLine
+   create stringstream from csvLine
 
-    split string using ',' delimiter
-    store values in array
+    read lastName from stream
+    read firstName from stream
 
-    firstName = field[0]
-    lastName  = field[1]
+    read street
+    read city
+    read state
+    read zip
 
-    street = field[2]
-    city   = field[3]
-    state  = field[4]
-    zip    = field[5]
+    read birthDateString
+    read gradDateString
 
-    birthDateString = field[6]
-    gradDateString  = field[7]
+    read creditHours
 
-    creditHours = convert field[8] to integer
+    create new Address on heap
+    initialize with street, city, state, zip
 
-    call address.init(street, city, state, zip)
-    call birthDate.init(birthDateString)
-    call gradDate.init(gradDateString)
+    create new Date on heap
+    initialize with birthDateString
+
+    create new Date on heap
+    initialize with gradDateString
+
+    assign creditHours
 
 end function
 ```
@@ -154,11 +160,14 @@ function printStudent
 
     print "Credits: " + creditHours
 
-    print separator line
-
 end function
 ```
+## Student::getFirstName
 
+```
+function getFirstName
+    return firstName
+end function
 ---
 
 ## Student::getLastFirst
@@ -168,7 +177,99 @@ function getLastFirst
     return lastName + ", " + firstName
 end function
 ```
+## loadStudents
 
+```
+function loadStudents(studentsVector)
+
+    open students.csv file
+
+    while file has more lines
+
+        read line
+
+        create new Student on heap using line
+
+        add Student pointer to vector
+
+    close file
+
+end function
+```
+
+## printStudents
+
+```
+
+function printStudents(studentsVector)
+
+    for each student in vector
+
+        call student.printStudent()
+
+        print separator line
+
+end function
+```
+
+## showStudentNames
+```
+
+function showStudentNames(studentsVector)
+
+    for each student in vector
+
+        print lastName + ", " + firstName
+
+end function
+```
+
+## findStudent
+```
+
+function findStudent(studentsVector)
+
+    ask user for last name
+
+    for each student in vector
+
+        if student lastName contains search string
+
+            print student data
+
+            print separator line
+
+end function
+```
+
+## delStudents
+```
+function delStudents(studentsVector)
+
+    for each student in vector
+
+        delete student pointer
+
+end function
+```
+
+## menu
+```
+function menu
+
+    display menu options
+
+    0) quit
+    1) print all student names
+    2) print all student data
+    3) find a student
+
+    ask user for input
+
+    return user choice
+
+end function
+```
 ---
 
 # Implementation (Week 1)
@@ -178,6 +279,12 @@ Date class
 Student class with sample data.  
 Makefile created with the required targets (So Far).  
 
+(Week 2)
+Student objects created dynamically from CSV data.
+Students stored in a vector of pointers.
+Menu system implemented.
+Search functionality implemented.
+Memory cleaned using delete before program exit.
 ---
 
 # Makefile Targets (So Far)

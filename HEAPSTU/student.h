@@ -6,22 +6,29 @@
 #include "date.h"
 
 class Student {
+
 private:
+
     std::string firstName;
     std::string lastName;
-
-    Address address;
-    Date birthDate;
-    Date gradDate;
-
     int creditHours;
 
-public:
-    Student();
+    Address* address;
+    Date* dob;
+    Date* grad;
 
-    void init(std::string csvLine);
-    void printStudent() const;
-    std::string getLastFirst() const;
+public:
+
+    Student();
+    Student(std::string csvLine);
+
+    ~Student();
+
+    void printStudent();
+
+    std::string getFirstName();
+    std::string getLastName();
+
 };
 
 #endif
